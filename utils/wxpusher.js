@@ -58,7 +58,7 @@ const sendWxMsg = (msg, config) => {
       }
     })
       .then((response) => {
-        console.debug(response.data);
+        // console.debug(response.data);
         console.info('WxPusher 消息发送成功');
       })
       .catch((_error) => {
