@@ -26,6 +26,8 @@ const config = {
   ],
   qmsgKey: "", //qmsg酱key
   qmsgTo: "", //推送的qq号,用,分隔(可选)
+  wxPusherAppToken: "", // wxPusher 的 appToken
+  // TODO: feat: (wxpusher/topic) support wxpusher/topic push
 };
 
 const modeCN = {
@@ -60,7 +62,7 @@ const apis = {
   duration: "behavior/Duration.action",
   ip: "behavior/Duration!getIp.action",
   // 地图api
-  map:"https://restapi.amap.com/v3/geocode/regeo",
+  map: "https://restapi.amap.com/v3/geocode/regeo",
 };
 
 const reports = [
