@@ -1,6 +1,7 @@
 const { getHeaders } = require("./utils/xyb.js");
 let { config, apis, reports } = require("./config.js");
 const { sendMsg } = require("./utils/qmsg.js");
+const { sendWxMsg } = require("./utils/wxpusher.js")
 const axios = require("axios");
 const fs = require("fs");
 const FormData = require("form-data");
@@ -11,7 +12,7 @@ async function xybSign(config) {
   const baseUrl = "https://xcx.xybsyw.com/";
   // const baseUrl2 = "https://app.xybsyw.com/";
   const $http = {
-    get: function (url, data) {
+    get: function(url, data) {
       return axios
         .get((duration ? baseUrl2 : baseUrl) + url, {
           params: data,
@@ -27,7 +28,7 @@ async function xybSign(config) {
           throw new Error(err);
         });
     },
-    post: function (url, data) {
+    post: function(url, data) {
       return axios
         .post(baseUrl + url, data, {
           headers: {
@@ -45,7 +46,7 @@ async function xybSign(config) {
           throw new Error(err);
         });
     },
-    upload: function (url, form) {
+    upload: function(url, form) {
       return axios
         .post(url, form, {
           headers: {
@@ -59,7 +60,7 @@ async function xybSign(config) {
           throw new Error(err);
         });
     },
-    location: function (data) {
+    location: function(data) {
       return axios
         .get(apis.map, {
           params: data,
@@ -574,19 +575,19 @@ async function xybSign(config) {
     // 使用Haversine公式计算新坐标的经度和纬度
     const newLatitudeRadians = Math.asin(
       Math.sin(originalLatitudeRadians) * Math.cos(distanceInRadians) +
-        Math.cos(originalLatitudeRadians) *
-          Math.sin(distanceInRadians) *
-          Math.cos(directionInRadians)
+      Math.cos(originalLatitudeRadians) *
+      Math.sin(distanceInRadians) *
+      Math.cos(directionInRadians)
     );
 
     const newLongitudeRadians =
       originalLongitudeRadians +
       Math.atan2(
         Math.sin(directionInRadians) *
-          Math.sin(distanceInRadians) *
-          Math.cos(originalLatitudeRadians),
+        Math.sin(distanceInRadians) *
+        Math.cos(originalLatitudeRadians),
         Math.cos(distanceInRadians) -
-          Math.sin(originalLatitudeRadians) * Math.sin(newLatitudeRadians)
+        Math.sin(originalLatitudeRadians) * Math.sin(newLatitudeRadians)
       );
 
     // 将新的经纬度坐标转换为度数，并保留与传入参数相同的小数位数
@@ -707,6 +708,9 @@ async function run() {
   console.log(results.join("\n"));
   if (config.qmsgKey) {
     await sendMsg(results.join("\n"), config);
+  }
+  if (config.wxPusherAppToken) {
+    await sendWxMsg(results.join("\n"), config);
   }
 }
 
